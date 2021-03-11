@@ -18,14 +18,6 @@ vector
 src/Matrix.h
 /Barn/Lab/MyCppKit/src/Matrix.h
 
-/Barn/Lab/MyCppKit/src/Helper.cpp
-iostream
--
-
-/Barn/Lab/MyCppKit/src/Matrix.cpp
-Matrix.h
-/Barn/Lab/MyCppKit/src/Matrix.h
-
 /Barn/Lab/MyCppKit/src/Matrix.h
 vector
 -

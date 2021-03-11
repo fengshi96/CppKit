@@ -112,8 +112,18 @@ public:
         data_.resize(0);
     }
 
+    bool IsSquare() {
+        bool out = true;
+        if (nrow != ncol) {
+            out = false;
+            return out;
+        }
+        return out;
+    }
+
     bool IsHermitian() {
         bool out=true;
+        if (not IsSquare()) {out = false; return out;}
         for(int i=0; i < nrow; i++) {
             for(int j=0; j < ncol; j++) {
                 std::complex<T> Hij = data_[i+ j * nrow];
@@ -130,7 +140,8 @@ public:
     }
 
     bool IsSymmetric() {
-        bool out=true;
+        bool out = true;
+        if (not IsSquare()) {out = false; return out;}
         for(int i=0; i < nrow; i++) {
             for(int j=0; j < ncol; j++) {
                 T Hij = data_[i+ j * nrow];
@@ -138,12 +149,19 @@ public:
                 if(Hij != Hji) {
                     std::string tmp = "Hij != Hji " + std::to_string(i)+"-"+ std::to_string(j)+" \n";
                     std::cout << i << " \t " << j << " \t " << Hij << " \t " << Hji << std::endl;
-                    out=false;
+                    out = false;
                     return out;
                 }
             }
         }
         return out;
+    }
+
+    void conjugate()
+    {
+        int n = data_.size();
+        for (int i = 0; i < n; ++i)
+            data_[i] = std::conj(data_[i]);
     }
 
 private:

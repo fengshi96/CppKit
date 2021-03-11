@@ -22,7 +22,6 @@ void diag(Matrix<dcomplex>& m, std::vector<double>& evals, char option){
     char uplo='U';  // 'U':  Upper triangle of A is stored;
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
     assert(m.IsHermitian());
 
     evals.resize(n);
@@ -58,7 +57,6 @@ void diag(Matrix<std::complex<float>> &m, std::vector<float>& evals, char option
     char uplo='U';
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
     assert(m.IsHermitian());
 
     std::vector<std::complex<float> > work(3);
@@ -94,7 +92,6 @@ void diag(Matrix<double> &m, std::vector<double>& evals, char option)
     char uplo='U';
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
     assert(m.IsSymmetric());
 
     std::vector<double> work(3);
@@ -130,7 +127,6 @@ void diag(Matrix<float> &m, std::vector<float>& evals,char option)
     char uplo='U';
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
     assert(m.IsSymmetric());
 
     std::vector<float> work(3);
@@ -167,7 +163,7 @@ void diag(Matrix<double> &m, std::vector<double>& evalsRe, std::vector<double>& 
     char jobvr = option;
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
+    assert(m.IsSquare());
 
     std::vector<double> vl;
     vr.resize(n * n);
@@ -207,7 +203,7 @@ void diag(Matrix<float> &m, std::vector<float>& evalsRe, std::vector<float>& eva
     char jobvr = option;
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
+    assert(m.IsSquare());
 
     std::vector<float> vl;
     vr.resize(n * n);
@@ -246,7 +242,7 @@ void diag(Matrix<dcomplex> &m, std::vector<dcomplex>& evals, std::vector<dcomple
     char jobvr = option;
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
+    assert(m.IsSquare());
 
     int ldvl = 1;
     int ldvr = n;
@@ -285,7 +281,7 @@ void diag(Matrix<fcomplex> &m, std::vector<fcomplex>& evals, std::vector<fcomple
     char jobvr = option;
     int n=m.rows();
     int lda=m.cols();
-    assert(n==lda);
+    assert(m.IsSquare());
 
     int ldvl = 1;
     int ldvr = n;
