@@ -76,11 +76,11 @@ public:
         data_.resize(newrow*newcol);
     }
 
-    int rows() {
+    inline int rows() {
         return nrow;
     }
 
-    int cols() {
+    inline int cols() {
         return ncol;
     }
 
