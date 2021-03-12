@@ -93,6 +93,9 @@
 		<Unit filename="/Barn/Lab/MyCppKit/src/Helper.h">
 			<Option target="TEST_LAPACK"/>
 		</Unit>
+		<Unit filename="/Barn/Lab/MyCppKit/src/LAPACK.h">
+			<Option target="TEST_LAPACK"/>
+		</Unit>
 		<Unit filename="/Barn/Lab/MyCppKit/src/Matrix.cpp">
 			<Option target="TEST_LAPACK"/>
 		</Unit>

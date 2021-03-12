@@ -1,5 +1,5 @@
-#ifndef SYMMETRY_CPP_MATRIX_H
-#define SYMMETRY_CPP_MATRIX_H
+#ifndef CPPKIT_MATRIX_H
+#define CPPKIT_MATRIX_H
 
 #include <vector>
 #include <cassert>
@@ -111,6 +111,9 @@ public:
     void transpose();
     void ajoint(Matrix<T>& m2, const Matrix<T>& m);
     void ajoint();
+
+    Matrix<T> diag();
+    Matrix<T> dot();
 
 private:
     int nrow, ncol;
@@ -229,7 +232,10 @@ void Matrix<T>::fillRand() {
 } // https://stackoverflow.com/a/23143753/14853469
 
 
-// These go to Matrix.cpp
+// The following go to Matrix.cpp
+// ============================================================================
+// =                        Declare Diagonalization                           =
+// ============================================================================
 // diag real symmetric and Hermitian matrix
 void diag(Matrix<dcomplex> &A, std::vector<double> &evals, char option);
 void diag(Matrix<fcomplex> &A, std::vector<float> &evals, char option);
@@ -243,5 +249,23 @@ void diag(Matrix<double> &m, std::vector<double>& evalsRe, std::vector<double>& 
           std::vector<double> vr, char option);
 void diag(Matrix<float> &m, std::vector<float>& evalsRe, std::vector<float>& evalsIm,
           std::vector<float> vr, char option);
+
+
+// ============================================================================
+// =                  Declare Matrix Vector Multiplication                    =
+// ============================================================================
+void mxv(Matrix<dcomplex>& A, std::vector<dcomplex>& X, std::vector<dcomplex>& Y, char option = 'g');
+void mxv(Matrix<fcomplex>& A, std::vector<fcomplex>& X, std::vector<fcomplex>& Y, char option = 'g');
+void mxv(Matrix<double>& A, std::vector<double>& X, std::vector<double>& Y, char option = 'g');
+void mxv(Matrix<float>& A, std::vector<float>& X, std::vector<float>& Y, char option = 'g');
+
+
+// ============================================================================
+// =                  Declare Matrix Matrix Multiplication                    =
+// ============================================================================
+void mxm(Matrix<dcomplex>& A, Matrix<dcomplex>& B, Matrix<dcomplex>& C, char option = 'g');
+void mxm(Matrix<fcomplex>& A, Matrix<fcomplex>& B, Matrix<fcomplex>& C, char option = 'g');
+void mxm(Matrix<double>& A, Matrix<double>& B, Matrix<double>& C, char option = 'g');
+void mxm(Matrix<float>& A, Matrix<float>& B, Matrix<float>& C, char option = 'g');
 
 #endif

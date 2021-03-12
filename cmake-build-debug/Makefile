@@ -131,17 +131,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named TEST_LAPACK
+# Target rules for targets named CPPKIT
 
 # Build rule for target.
-TEST_LAPACK: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TEST_LAPACK
-.PHONY : TEST_LAPACK
+CPPKIT: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CPPKIT
+.PHONY : CPPKIT
 
 # fast build rule for target.
-TEST_LAPACK/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/build
-.PHONY : TEST_LAPACK/fast
+CPPKIT/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/build
+.PHONY : CPPKIT/fast
 
 main.o: main.cpp.o
 
@@ -149,7 +149,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -158,7 +158,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -167,7 +167,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 src/Helper.o: src/Helper.cpp.o
@@ -176,7 +176,7 @@ src/Helper.o: src/Helper.cpp.o
 
 # target to build an object file
 src/Helper.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/src/Helper.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Helper.cpp.o
 .PHONY : src/Helper.cpp.o
 
 src/Helper.i: src/Helper.cpp.i
@@ -185,7 +185,7 @@ src/Helper.i: src/Helper.cpp.i
 
 # target to preprocess a source file
 src/Helper.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/src/Helper.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Helper.cpp.i
 .PHONY : src/Helper.cpp.i
 
 src/Helper.s: src/Helper.cpp.s
@@ -194,7 +194,7 @@ src/Helper.s: src/Helper.cpp.s
 
 # target to generate assembly for a file
 src/Helper.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/src/Helper.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Helper.cpp.s
 .PHONY : src/Helper.cpp.s
 
 src/Matrix.o: src/Matrix.cpp.o
@@ -203,7 +203,7 @@ src/Matrix.o: src/Matrix.cpp.o
 
 # target to build an object file
 src/Matrix.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/src/Matrix.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Matrix.cpp.o
 .PHONY : src/Matrix.cpp.o
 
 src/Matrix.i: src/Matrix.cpp.i
@@ -212,7 +212,7 @@ src/Matrix.i: src/Matrix.cpp.i
 
 # target to preprocess a source file
 src/Matrix.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/src/Matrix.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Matrix.cpp.i
 .PHONY : src/Matrix.cpp.i
 
 src/Matrix.s: src/Matrix.cpp.s
@@ -221,7 +221,7 @@ src/Matrix.s: src/Matrix.cpp.s
 
 # target to generate assembly for a file
 src/Matrix.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/TEST_LAPACK.dir/build.make CMakeFiles/TEST_LAPACK.dir/src/Matrix.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Matrix.cpp.s
 .PHONY : src/Matrix.cpp.s
 
 # Help Target
@@ -232,7 +232,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... TEST_LAPACK"
+	@echo "... CPPKIT"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

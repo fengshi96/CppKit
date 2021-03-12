@@ -1,21 +1,10 @@
 #include "Matrix.h"
+#include "LAPACK.h"
+#include "BLAS.h"
 
-typedef std::complex<double> dcomplex;
-typedef std::complex<float> fcomplex;
-
-extern "C" {
-    void zheev_(char *,char *,int *, dcomplex *, int *, double *, dcomplex *,int *, double *, int *);
-    void cheev_(char *,char *,int *, fcomplex *, int *, float *, fcomplex *,int *, float *, int *);
-    void dsyev_(char *,char *,int *,double *, int *, double *, double *, int *, int *);
-    void ssyev_(char *,char *,int *,float *, int *, float *, float *, int *, int *);
-    void dgeev_(char*, char*, int*, double *, int*, double* , double*, double*, int*, double*, int*, double*, int*, int*);
-    void sgeev_(char*, char*, int*, float *, int*, float* , float*, float*, int*, float*, int*, float*, int*, int*);
-    void zgeev_(char*, char*, int*, dcomplex *, int*, dcomplex* , dcomplex*, int*, dcomplex*,
-                int*, dcomplex*, int*, double*, int*);
-    void cgeev_(char*, char*, int*, fcomplex *, int*, fcomplex* , fcomplex*, int*, fcomplex*,
-            int*, fcomplex*, int*, float*, int*);
-}
-
+// ============================================================================
+// =                       Diagonalization Wrapper                            =
+// ============================================================================
 // diag double precision Hermitian matrix m
 void diag(Matrix<dcomplex>& m, std::vector<double>& evals, char option){
     char jobz=option;  // 'N':  Compute eigenvalues only; 'V':  Compute eigenvalues and eigenvectors.
@@ -32,7 +21,7 @@ void diag(Matrix<dcomplex>& m, std::vector<double>& evals, char option){
     fill(evals.begin(),evals.end(),0);
 
     // query:
-    zheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
+    LAPACK::zheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query \n";
         perror("diag: zheev: failed with info!=0.\n");
@@ -41,7 +30,7 @@ void diag(Matrix<dcomplex>& m, std::vector<double>& evals, char option){
     work.resize(lwork+1);
 
     // real work:
-    zheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
+    LAPACK::zheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
         perror("diag: zheev: failed with info!=0.\n");
@@ -66,7 +55,7 @@ void diag(Matrix<std::complex<float>> &m, std::vector<float>& evals, char option
     evals.resize(n);
 
     // query:
-    cheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
+    LAPACK::cheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
         throw std::runtime_error("diag: cheev_: failed with info!=0.\n");
@@ -77,7 +66,7 @@ void diag(Matrix<std::complex<float>> &m, std::vector<float>& evals, char option
     work.resize(lwork);
 
     // real work:
-    cheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
+    LAPACK::cheev_(&jobz,&uplo,&n,&(m(0,0)),&lda,&(evals[0]),&(work[0]),&lwork,&(rwork[0]),&info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
         throw std::runtime_error("diag: cheev: failed with info!=0.\n");
@@ -103,7 +92,7 @@ void diag(Matrix<double> &m, std::vector<double>& evals, char option)
     evals.resize(n);
 
     // query:
-    dsyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
+    LAPACK::dsyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
         throw std::runtime_error("diag: dsyev_: failed with info!=0.\n");
@@ -113,7 +102,7 @@ void diag(Matrix<double> &m, std::vector<double>& evals, char option)
     lwork = std::max(1 + static_cast<int>(work[0]), (NB + 2)*n);
     work.resize(lwork);
     // real work:
-    dsyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
+    LAPACK::dsyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
         throw std::runtime_error("diag: dsyev_: failed with info!=0.\n");
@@ -138,7 +127,7 @@ void diag(Matrix<float> &m, std::vector<float>& evals,char option)
     evals.resize(n);
 
     // query:
-    ssyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
+    LAPACK::ssyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
         throw std::runtime_error("diag: ssyev_: failed with info!=0.\n");
@@ -149,7 +138,7 @@ void diag(Matrix<float> &m, std::vector<float>& evals,char option)
     work.resize(lwork);
 
     // real work:
-    ssyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
+    LAPACK::ssyev_(&jobz,&uplo,&n,&(m(0,0)),&lda, &(evals[0]),&(work[0]),&lwork, &info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
         throw std::runtime_error("diag: ssyev_: failed with info!=0.\n");
@@ -178,7 +167,7 @@ void diag(Matrix<double> &m, std::vector<double>& evalsRe, std::vector<double>& 
     evalsIm.resize(n);
 
     // query:
-    dgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
+    LAPACK::dgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
            &(vl[0]), &ldvl, &(vr[0]), &ldvr, &(work[0]), &lwork, &info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
@@ -188,7 +177,7 @@ void diag(Matrix<double> &m, std::vector<double>& evalsRe, std::vector<double>& 
     work.resize(lwork);
 
     // real work:
-    dgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
+    LAPACK::dgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
            &(vl[0]), &ldvl, &(vr[0]), &ldvr, &(work[0]), &lwork, &info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
@@ -218,7 +207,7 @@ void diag(Matrix<float> &m, std::vector<float>& evalsRe, std::vector<float>& eva
     evalsIm.resize(n);
 
     // query:
-    sgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
+    LAPACK::sgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
            &(vl[0]), &ldvl, &(vr[0]), &ldvr, &(work[0]), &lwork, &info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
@@ -228,7 +217,7 @@ void diag(Matrix<float> &m, std::vector<float>& evalsRe, std::vector<float>& eva
     work.resize(lwork);
 
     // real work:
-    sgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
+    LAPACK::sgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evalsRe[0]), &(evalsIm[0]),
            &(vl[0]), &ldvl, &(vr[0]), &ldvr, &(work[0]), &lwork, &info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
@@ -255,7 +244,7 @@ void diag(Matrix<dcomplex> &m, std::vector<dcomplex>& evals, std::vector<dcomple
     int info;
 
     // query:
-    zgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
+    LAPACK::zgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
            &(work[0]), &lwork, &(rwork[0]), &info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
@@ -266,7 +255,7 @@ void diag(Matrix<dcomplex> &m, std::vector<dcomplex>& evals, std::vector<dcomple
     work.resize(lwork);
 
     // real work:
-    zgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
+    LAPACK::zgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
            &(work[0]), &lwork, &(rwork[0]), &info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
@@ -294,7 +283,7 @@ void diag(Matrix<fcomplex> &m, std::vector<fcomplex>& evals, std::vector<fcomple
     int info;
 
     // query:
-    cgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
+    LAPACK::cgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
            &(work[0]), &lwork, &(rwork[0]), &info);
     if (info!=0) {
         std::cerr<<"info="<<info<<" during query\n";
@@ -305,10 +294,23 @@ void diag(Matrix<fcomplex> &m, std::vector<fcomplex>& evals, std::vector<fcomple
     work.resize(lwork);
 
     // real work:
-    cgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
+    LAPACK::cgeev_(&jobvl, &jobvr, &n, &(m(0,0)), &lda, &(evals[0]), &(vl[0]), &ldvl, &(vr[0]), &ldvr,
            &(work[0]), &lwork, &(rwork[0]), &info);
     if (info!=0) {
         std::cerr<<"work info="<<info<<"\n";
         throw std::runtime_error("diag: cgeev_: failed with info!=0.\n");
     }
 }
+
+// ============================================================================
+// =                Matrix Vector Multiplication Wrapper                      =
+// ============================================================================
+
+
+
+
+
+
+// ============================================================================
+// =                Matrix Matrix Multiplication Wrapper                      =
+// ============================================================================
