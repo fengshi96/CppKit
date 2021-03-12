@@ -164,10 +164,63 @@ public:
             data_[i] = std::conj(data_[i]);
     }
 
+    void transpose(Matrix<T>& m2, const Matrix<T>& m);
+    void transpose();
+    void ajoint(Matrix<T>& m2, const Matrix<T>& m);
+    void ajoint();
+
 private:
     int nrow, ncol;
     std::vector<T> data_;
 };
+
+// functions
+template<class T>
+void Matrix<T>::transpose(Matrix<T>& m2,const Matrix<T>& m)
+{
+    m2.resize(m.cols(),m.rows());
+    for (int i=0;i<m2.rows();++i)
+        for (int j=0;j<m2.cols();++j)
+            m2(i,j) = m(j,i);
+}
+
+template<class T>
+void Matrix<T>::transpose() {
+    if (IsSquare()) {
+        for (int i = 0; i < nrow; ++i) {
+            for (int j = 0; j < i; ++j) {
+                T tmp = data_[i+ j * nrow];
+                data_[i+ j * nrow] = data_[j+ i * nrow];
+                data_[j+ i * nrow] = tmp;
+            }
+        }
+    }
+    else {
+        int newnrow = ncol; int newncol = nrow;
+        Matrix<T> m2(newnrow, newncol);
+        for (int i=0; i<newnrow; ++i)
+            for (int j=0; j<newncol; ++j)
+                m2(i,j) = data_[j+ i * nrow];
+
+        this->resize(newnrow, newncol);
+        for (int i=0; i<newnrow; ++i)
+            for (int j=0; j<newncol; ++j)
+                data_[i+ j * nrow] = m2(i, j);
+    }
+}
+
+template<class T>
+void Matrix<T>::ajoint(Matrix<T>& m2, const Matrix<T>& m){
+    m2(m);
+    m2.conjugate();
+    m2.transpose();
+}
+
+template<class T>
+void Matrix<T>::ajoint(){
+    this->conjugate();
+    this->transpose();
+}
 
 // These go to Matrix.cpp
 // real symmetric and Hermitian matrix
