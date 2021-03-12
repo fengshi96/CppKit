@@ -5,9 +5,11 @@
 #include <cassert>
 #include <iostream>
 #include <random>
+#include <typeinfo>
 #include <iterator>
 #include <functional>
 #include <complex>
+#include "BLAS.h"
 
 typedef std::complex<double> dcomplex;
 typedef std::complex<float> fcomplex;
@@ -112,8 +114,9 @@ public:
     void ajoint(Matrix<T>& m2, const Matrix<T>& m);
     void ajoint();
 
-    Matrix<T> diag();
-    Matrix<T> dot();
+    Matrix<T> diag(char option = 'N');
+    Matrix<T> dot(Matrix<T>& B, char option = 'g');
+    std::vector<T> dot(std::vector<T>& X, char option = 'g');
 
 private:
     int nrow, ncol;
@@ -134,13 +137,14 @@ bool Matrix<T>::IsSquare() {
 
 template<class T>
 bool Matrix<T>::IsHermitian() {
+    double eps=1e-8;
     bool out=true;
     if (not IsSquare()) {out = false; return out;}
     for(int i=0; i < nrow; i++) {
-        for(int j=0; j < ncol; j++) {
-            std::complex<T> Hij = data_[i+ j * nrow];
-            std::complex<T> Hji = data_[j+ i * nrow];
-            if(Hij != std::conj(Hji)) {
+        for(int j=0; j < i; j++) {
+            T Hij = data_[i+ j * nrow];
+            T Hji = data_[j+ i * nrow];
+            if(std::norm(Hij - std::conj(Hji)) > eps) {
                 std::string tmp = "Hij != Hji " + std::to_string(i)+"-"+ std::to_string(j)+" \n";
                 std::cout << i << " \t " << j << " \t " << Hij << " \t " << Hji << std::endl;
                 out=false;
@@ -153,13 +157,14 @@ bool Matrix<T>::IsHermitian() {
 
 template<class T>
 bool Matrix<T>::IsSymmetric() {
+    double eps=1e-8;
     bool out = true;
     if (not IsSquare()) {out = false; return out;}
     for(int i=0; i < nrow; i++) {
-        for(int j=0; j < ncol; j++) {
+        for(int j=0; j < i; j++) {
             T Hij = data_[i+ j * nrow];
             T Hji = data_[j+ i * nrow];
-            if(Hij != Hji) {
+            if(Hij - Hji > eps) {
                 std::string tmp = "Hij != Hji " + std::to_string(i)+"-"+ std::to_string(j)+" \n";
                 std::cout << i << " \t " << j << " \t " << Hij << " \t " << Hji << std::endl;
                 out = false;
@@ -232,7 +237,68 @@ void Matrix<T>::fillRand() {
 } // https://stackoverflow.com/a/23143753/14853469
 
 
-// The following go to Matrix.cpp
+// = Matrix Vector Multiplication
+template<class T>
+std::vector<T> prod(Matrix<T>& A, std::vector<T>& X, char option = 'g') {
+    // const std::type_info& ti = typeid(T);
+    std::vector<T> Y;
+    mxvw(A, X, Y, option);
+    return Y;
+}
+
+// = Matrix Vector Multiplication v2
+template<class T>
+std::vector<T> Matrix<T>::dot(std::vector<T>& X, char option){
+    return prod(*this, X, option);
+}
+
+// = Matrix Matrix Multiplication
+template<class T>
+Matrix<T> prod(Matrix<T>& A, Matrix<T>& B, char option = 'g') {
+    // const std::type_info& ti = typeid(T);
+    Matrix<T> Y;
+    mxmw(A, B, Y, option);
+    return Y;
+}
+
+// = Matrix Matrix Multiplication v2
+template<class T>
+Matrix<T> Matrix<T>::dot(Matrix<T>& B, char option){
+    return prod(*this, B, option);
+}
+
+
+
+
+
+// ############################################################################
+// =   The following go to Matrix.cpp; The following go to Matrix.cpp;        =
+// ############################################################################
+// ============================================================================
+// =                  Declare Vector Vector Multiplication                    =
+// ============================================================================
+dcomplex dot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y);
+fcomplex dot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y);
+double dot(std::vector<double>& X, std::vector<double>& Y);
+float dot(std::vector<float>& X, std::vector<float>& Y);
+
+// ============================================================================
+// =                  Declare Matrix Vector Multiplication                    =
+// ============================================================================
+void mxvw(Matrix<dcomplex>& A, std::vector<dcomplex>& X, std::vector<dcomplex>& Y, char option = 'g');
+void mxvw(Matrix<fcomplex>& A, std::vector<fcomplex>& X, std::vector<fcomplex>& Y, char option = 'g');
+void mxvw(Matrix<double>& A, std::vector<double>& X, std::vector<double>& Y, char option = 'g');
+void mxvw(Matrix<float>& A, std::vector<float>& X, std::vector<float>& Y, char option = 'g');
+
+
+// ============================================================================
+// =                  Declare Matrix Matrix Multiplication                    =
+// ============================================================================
+void mxmw(Matrix<dcomplex>& A, Matrix<dcomplex>& B, Matrix<dcomplex>& C, char option = 'g');
+void mxmw(Matrix<fcomplex>& A, Matrix<fcomplex>& B, Matrix<fcomplex>& C, char option = 'g');
+void mxmw(Matrix<double>& A, Matrix<double>& B, Matrix<double>& C, char option = 'g');
+void mxmw(Matrix<float>& A, Matrix<float>& B, Matrix<float>& C, char option = 'g');
+
 // ============================================================================
 // =                        Declare Diagonalization                           =
 // ============================================================================
@@ -249,23 +315,5 @@ void diag(Matrix<double> &m, std::vector<double>& evalsRe, std::vector<double>& 
           std::vector<double> vr, char option);
 void diag(Matrix<float> &m, std::vector<float>& evalsRe, std::vector<float>& evalsIm,
           std::vector<float> vr, char option);
-
-
-// ============================================================================
-// =                  Declare Matrix Vector Multiplication                    =
-// ============================================================================
-void mxv(Matrix<dcomplex>& A, std::vector<dcomplex>& X, std::vector<dcomplex>& Y, char option = 'g');
-void mxv(Matrix<fcomplex>& A, std::vector<fcomplex>& X, std::vector<fcomplex>& Y, char option = 'g');
-void mxv(Matrix<double>& A, std::vector<double>& X, std::vector<double>& Y, char option = 'g');
-void mxv(Matrix<float>& A, std::vector<float>& X, std::vector<float>& Y, char option = 'g');
-
-
-// ============================================================================
-// =                  Declare Matrix Matrix Multiplication                    =
-// ============================================================================
-void mxm(Matrix<dcomplex>& A, Matrix<dcomplex>& B, Matrix<dcomplex>& C, char option = 'g');
-void mxm(Matrix<fcomplex>& A, Matrix<fcomplex>& B, Matrix<fcomplex>& C, char option = 'g');
-void mxm(Matrix<double>& A, Matrix<double>& B, Matrix<double>& C, char option = 'g');
-void mxm(Matrix<float>& A, Matrix<float>& B, Matrix<float>& C, char option = 'g');
 
 #endif

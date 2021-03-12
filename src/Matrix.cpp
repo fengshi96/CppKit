@@ -302,15 +302,254 @@ void diag(Matrix<fcomplex> &m, std::vector<fcomplex>& evals, std::vector<fcomple
     }
 }
 
+
+
+// ============================================================================
+// =                Vector Vector Multiplication Wrapper                      =
+// ============================================================================
+// X dot Y
+double dot(std::vector<double>& X, std::vector<double>& Y) {
+    int incx = 1; int incy = 1;  // stride
+    int n = X.size();
+    return BLAS::ddot_(&n, &(X[0]), &incx, &(Y[0]), &incy);
+}
+
+float dot(std::vector<float>& X, std::vector<float>& Y) {
+    int incx = 1; int incy = 1;  // stride
+    int n = X.size();
+    return BLAS::sdot_(&n, &(X[0]), &incx, &(Y[0]), &incy);
+}
+
+dcomplex dot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y) {
+    int incx = 1; int incy = 1;  // stride
+    int n = X.size();
+    return BLAS::zdotu_(&n, &(X[0]), &incx, &(Y[0]), &incy);
+}
+
+fcomplex dot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y) {
+    int incx = 1; int incy = 1;  // stride
+    int n = X.size();
+    return BLAS::cdotu_(&n, &(X[0]), &incx, &(Y[0]), &incy);
+}
+
+// X.conjugate dot Y
+
+
+
 // ============================================================================
 // =                Matrix Vector Multiplication Wrapper                      =
 // ============================================================================
+// real matrix vector multiplication with single precision
+void mxvw(Matrix<float>& A, std::vector<float>& X, std::vector<float>& Y, char option) {
+    int incx = 1; int incy = 1; // stride
+    if (option == 'g') {
+        // general matrix
+        char trans = 'N';
+        float alpha = 1;
+        float beta = 0;
+        int m = A.rows();
+        int n = A.cols();
+        int lda = m;
+        assert(X.size() == n);
+        Y.resize(m);
+        BLAS::sgemv_(&trans, &m, &n, &alpha, &(A(0,0)), &lda, &(X[0]), &incx, &beta, &(Y[0]), &incy);
+    }
+    else if (option == 's') {
+        // symmetric matrix
 
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxvw_float: invalid option.\n");
+    }
 
+}
 
+// real matrix vector multiplication with double precision
+void mxvw(Matrix<double>& A, std::vector<double>& X, std::vector<double>& Y, char option) {
+    int incx = 1; int incy = 1; // stride
+    if (option == 'g') {
+        // general matrix
+        char trans = 'N';
+        double alpha = 1;
+        double beta = 0;
+        int m = A.rows();
+        int n = A.cols();
+        int lda = m;
+        assert(X.size() == n);
+        Y.resize(m);
+        BLAS::dgemv_(&trans, &m, &n, &alpha, &(A(0,0)), &lda, &(X[0]), &incx, &beta, &(Y[0]), &incy);
+    }
+    else if (option == 's') {
+        // symmetric matrix
 
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxvw_double: invalid option.\n");
+    }
+
+}
+
+// complex matrix vector multiplication with single precision
+void mxvw(Matrix<fcomplex>& A, std::vector<fcomplex>& X, std::vector<fcomplex>& Y, char option) {
+    int incx = 1; int incy = 1; // stride
+    if (option == 'g') {
+        // general matrix
+        char trans = 'N';
+        fcomplex alpha = 1;
+        fcomplex beta = 0;
+        int m = A.rows();
+        int n = A.cols();
+        int lda = m;
+        assert(X.size() == n);
+        Y.resize(m);
+        BLAS::cgemv_(&trans, &m, &n, &alpha, &(A(0,0)), &lda, &(X[0]), &incx, &beta, &(Y[0]), &incy);
+    }
+    else if (option == 'h') {
+        // hermitian matrix
+        assert(A.IsHermitian());
+        char uplo = 'U';
+        int n = A.cols();
+        int lda = n;
+        Y.resize(n);
+        fcomplex alpha = 1;
+        fcomplex beta = 0;
+        BLAS::chemv_(&uplo, &n, &alpha, &(A(0,0)), &lda, &(X[0]), &incx, &beta, &(Y[0]), &incy);
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxvw_fcomplex: invalid option.\n");
+    }
+
+}
+
+// complex matrix vector multiplication with double precision
+void mxvw(Matrix<dcomplex>& A, std::vector<dcomplex>& X, std::vector<dcomplex>& Y, char option) {
+    int incx = 1; int incy = 1; // stride
+    if (option == 'g') {
+        // general matrix
+        char trans = 'N';
+        dcomplex alpha = 1;
+        dcomplex beta = 0;
+        int m = A.rows();
+        int n = A.cols();
+        int lda = m;
+        assert(X.size() == n);
+        Y.resize(m);
+        BLAS::zgemv_(&trans, &m, &n, &alpha, &(A(0,0)), &lda, &(X[0]), &incx, &beta, &(Y[0]), &incy);
+    }
+    else if (option == 'h') {
+        // hermitian matrix
+        assert(A.IsHermitian());
+        char uplo = 'U';
+        int n = A.cols();
+        int lda = n;
+        Y.resize(n);
+        dcomplex alpha = 1;
+        dcomplex beta = 0;
+        BLAS::zhemv_(&uplo, &n, &alpha, &(A(0,0)), &lda, &(X[0]), &incx, &beta, &(Y[0]), &incy);
+
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxvw_dcomplex: invalid option.\n");
+    }
+
+}
 
 
 // ============================================================================
 // =                Matrix Matrix Multiplication Wrapper                      =
 // ============================================================================
+// real matrix matrix multiplication with double precision
+void mxmw(Matrix<double>& A, Matrix<double>& B, Matrix<double>& C, char option) {
+    if (option == 'g') {
+        char transa = 'N';
+        char transb = 'N';
+        int m = A.rows();  // rows of A, C
+        int n = B.cols();  // cols of B, C
+        C.resize(m, n);
+        int k = A.cols(); // cols of A; rows of B
+        double alpha = 1;
+        double beta = 0;
+        int lda = m;
+        int ldb = k;
+        int ldc = m;
+        BLAS::dgemm_(&transa, &transb, &m, &n, &k, &alpha, &(A(0,0)), &lda, &(B(0,0)),
+                     &ldb, &beta, &(C(0,0)), &ldc);
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxmw_double: invalid option.\n");
+    }
+}
+
+// real matrix matrix multiplication with single precision
+void mxmw(Matrix<float>& A, Matrix<float>& B, Matrix<float>& C, char option) {
+    if (option == 'g') {
+        char transa = 'N';
+        char transb = 'N';
+        int m = A.rows();  // rows of A, C
+        int n = B.cols();  // cols of B, C
+        C.resize(m, n);
+        int k = A.cols(); // cols of A; rows of B
+        float alpha = 1;
+        float beta = 0;
+        int lda = m;
+        int ldb = k;
+        int ldc = m;
+        BLAS::sgemm_(&transa, &transb, &m, &n, &k, &alpha, &(A(0,0)), &lda, &(B(0,0)),
+                     &ldb, &beta, &(C(0,0)), &ldc);
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxmw_float: invalid option.\n");
+    }
+}
+
+// complex matrix matrix multiplication with double precision
+void mxmw(Matrix<dcomplex>& A, Matrix<dcomplex>& B, Matrix<dcomplex>& C, char option) {
+    if (option == 'g') {
+        char transa = 'N';
+        char transb = 'N';
+        int m = A.rows();  // rows of A, C
+        int n = B.cols();  // cols of B, C
+        C.resize(m, n);
+        int k = A.cols(); // cols of A; rows of B
+        dcomplex alpha = 1;
+        dcomplex beta = 0;
+        int lda = m;
+        int ldb = k;
+        int ldc = m;
+        BLAS::zgemm_(&transa, &transb, &m, &n, &k, &alpha, &(A(0,0)), &lda, &(B(0,0)),
+                     &ldb, &beta, &(C(0,0)), &ldc);
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxmw_dcomplex: invalid option.\n");
+    }
+}
+
+// complex matrix matrix multiplication with single precision
+void mxmw(Matrix<fcomplex>& A, Matrix<fcomplex>& B, Matrix<fcomplex>& C, char option) {
+    if (option == 'g') {
+        char transa = 'N';
+        char transb = 'N';
+        int m = A.rows();  // rows of A, C
+        int n = B.cols();  // cols of B, C
+        C.resize(m, n);
+        int k = A.cols(); // cols of A; rows of B
+        fcomplex alpha = 1;
+        fcomplex beta = 0;
+        int lda = m;
+        int ldb = k;
+        int ldc = m;
+        BLAS::cgemm_(&transa, &transb, &m, &n, &k, &alpha, &(A(0,0)), &lda, &(B(0,0)),
+                     &ldb, &beta, &(C(0,0)), &ldc);
+    }
+    else {
+        std::cerr<<"option="<<option<<"\n";
+        throw std::logic_error("diag: mxmw_fcomplex: invalid option.\n");
+    }
+}

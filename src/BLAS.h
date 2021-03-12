@@ -14,7 +14,10 @@ namespace BLAS {
         // ============================================================================
         // =    Level 1 BLAS          DOT: dot product of vectors                     =
         // ============================================================================
-        double ddot_(int* ,double *,int* ,double* ,int* );
+        double ddot_(const int*, const double *, const int* ,const double*, const int* );
+        float sdot_(const int*, const float *, const int*, const float*, const int* );
+        dcomplex zdotu_(const int*, const dcomplex *, const int*, const dcomplex*, const int* );
+        fcomplex cdotu_(const int*, const fcomplex *, const int*, const fcomplex*, const int* );
 
         // ============================================================================
         // =    Level 2 BLAS          GEMV: matrix vector multiply                    =

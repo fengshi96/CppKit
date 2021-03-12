@@ -2,40 +2,50 @@
 #include <fstream>
 #include <complex>
 #include <vector>
+#include <typeinfo>
 #include "src/Matrix.h"
 
 typedef std::complex<double> dcomplex;
 typedef std::complex<float> fcomplex;
 
 int main() {
-    std::vector<fcomplex> data = {{2,1}, 1.2, 1.4, 2};
-    Matrix<fcomplex> M(2,2, data);  // the matrix A to be diagonalized
 
-    // assert(M.IsHermitian());
-    // M.fillRand();
-    M.print();
-    M.ajoint();
-    M.print();
+//    // test vector vector product
+//    std::vector<double> X = {2,2};
+//    std:: vector<double> Y = {4,5};
+//    int R = vxv(X, Y);
+//    std::cout << R << std::endl;
+//
+//    std::cout << (typeid(dcomplex).name() == typeid(std::complex<double>).name()) <<std::endl;
+//    std::cout << typeid(std::complex<double>).name() <<std::endl;
 
-    std::vector<fcomplex> evals;
-    std::vector<fcomplex> evecs;
+//    // test mv prod abstraction
+//    std::vector<fcomplex> X = {{2,1},2};
+//
+//    std::vector<fcomplex> matini = {1,2,2,4};
+//    Matrix<fcomplex> A(2,2,matini);
+//
+//    std::vector<fcomplex> R = A.dot(X);
+//    for (const auto& x : R ) {
+//        std::cout << x << " ";
+//    }
 
-    diag(M, evals, evecs, 'V');
+        // test mm prod abstraction
 
-    for(const auto& x : evals) {
-        std::cout << x << " ";
-    }
-    std::cout << std:: endl << std:: endl << std:: endl;
+        std::vector<dcomplex> matini1 = {1,2,2,4};
+        Matrix<dcomplex> A(2,2,matini1);
 
+        std::vector<dcomplex> matini2 = {1,1,2,0};
+        Matrix<dcomplex> B(2,2,matini2);
 
-    // test transpose
-    std::vector<fcomplex> vec = {{1,2}, {2,5}, {1,9}, {11,12}, {223, 11}, {0,99}};
-    Matrix<fcomplex> N(2, 3, vec);
-    N.print();
-    std::cout << std::endl;
+        Matrix<dcomplex> R = A.dot(B, 'g');
+        R.print();
 
-    N.ajoint();
-    N.print();
+//      // test vector vector multiplication
+//      std::vector<fcomplex> X = {{1,1},2};
+//      std::vector<fcomplex> Y = {4,5};
+//      dcomplex R = dot(X,Y);
+//      std::cout << R << " ";
 
 
 
