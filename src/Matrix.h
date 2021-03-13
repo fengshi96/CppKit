@@ -121,8 +121,8 @@ public:
     void ajoint(Matrix<T>& m2, const Matrix<T>& m);
     void ajoint();
 
-    Matrix<T> dot(Matrix<T>& B, char option = 'g');
-    std::vector<T> dot(std::vector<T>& X, char option = 'g');
+    Matrix<T> prod(Matrix<T>& B, char option = 'g');
+    std::vector<T> prod(std::vector<T>& X, char option = 'g');
 
 private:
     int nrow, ncol;
@@ -325,8 +325,10 @@ std::vector<T> prod(Matrix<T>& A, std::vector<T>& X, char option = 'g') {
 
 // = Matrix Vector Multiplication v2
 template<class T>
-std::vector<T> Matrix<T>::dot(std::vector<T>& X, char option){
-    return prod(*this, X, option);
+std::vector<T> Matrix<T>::prod(std::vector<T>& X, char option) {
+    std::vector<T> Y;
+    mxvw(*this, X, Y, option);
+    return Y;
 }
 
 // = Matrix Matrix Multiplication
@@ -340,8 +342,10 @@ Matrix<T> prod(Matrix<T>& A, Matrix<T>& B, char option = 'g') {
 
 // = Matrix Matrix Multiplication v2
 template<class T>
-Matrix<T> Matrix<T>::dot(Matrix<T>& B, char option){
-    return prod(*this, B, option);
+Matrix<T> Matrix<T>::prod(Matrix<T>& B, char option){
+    Matrix<T> Y;
+    mxmw(*this, B, Y, option);
+    return Y;
 }
 
 
