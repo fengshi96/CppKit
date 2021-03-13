@@ -11,8 +11,9 @@ void diag(Matrix<dcomplex>& m, std::vector<double>& evals, char option){
     char uplo='U';  // 'U':  Upper triangle of A is stored;
     int n=m.rows();
     int lda=m.cols();
+#ifdef DEBUG
     assert(m.IsHermitian());
-
+#endif
     evals.resize(n);
     std::vector<dcomplex> work(3);
     std::vector<double> rwork(3*n-2);
@@ -46,8 +47,9 @@ void diag(Matrix<std::complex<float>> &m, std::vector<float>& evals, char option
     char uplo='U';
     int n=m.rows();
     int lda=m.cols();
+#ifdef DEBUG
     assert(m.IsHermitian());
-
+#endif
     std::vector<std::complex<float> > work(3);
     std::vector<float> rwork(3*n);
     int info,lwork= -1;
@@ -81,8 +83,9 @@ void diag(Matrix<double> &m, std::vector<double>& evals, char option)
     char uplo='U';
     int n=m.rows();
     int lda=m.cols();
+#ifdef DEBUG
     assert(m.IsSymmetric());
-
+#endif
     std::vector<double> work(3);
     int info;
     int lwork= -1;
@@ -116,8 +119,9 @@ void diag(Matrix<float> &m, std::vector<float>& evals,char option)
     char uplo='U';
     int n=m.rows();
     int lda=m.cols();
+#ifdef DEBUG
     assert(m.IsSymmetric());
-
+#endif
     std::vector<float> work(3);
     int info;
     int lwork= -1;

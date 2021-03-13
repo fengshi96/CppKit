@@ -301,8 +301,6 @@ void mxmw(Matrix<fcomplex>& A, Matrix<fcomplex>& B, Matrix<fcomplex>& C, char op
 void mxmw(Matrix<double>& A, Matrix<double>& B, Matrix<double>& C, char option = 'g');
 void mxmw(Matrix<float>& A, Matrix<float>& B, Matrix<float>& C, char option = 'g');
 
-// hermitian matrices
-
 
 // ============================================================================
 // =                        Declare Diagonalization                           =

@@ -4,6 +4,7 @@ project(CPPKIT)
 set(CMAKE_CXX_STANDARD 20)
 
 # Flags of sources, headers and libraries
+set_directory_properties(PROPERTIES COMPILE_DEFINITIONS_DEBUG "_DEBUG")
 include_directories(/opt/OpenBLAS/include)
 link_directories(/opt/OpenBLAS/lib)
 set(SOURCE_FILES main.cpp src/Matrix.h src/Matrix.cpp src/Helper.h src/Helper.cpp src/LAPACK.h src/BLAS.h)
