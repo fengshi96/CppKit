@@ -114,7 +114,6 @@ public:
     void ajoint(Matrix<T>& m2, const Matrix<T>& m);
     void ajoint();
 
-    Matrix<T> diag(char option = 'N');
     Matrix<T> dot(Matrix<T>& B, char option = 'g');
     std::vector<T> dot(std::vector<T>& X, char option = 'g');
 
@@ -269,18 +268,21 @@ Matrix<T> Matrix<T>::dot(Matrix<T>& B, char option){
 
 
 
-
-
 // ############################################################################
 // =   The following go to Matrix.cpp; The following go to Matrix.cpp;        =
 // ############################################################################
 // ============================================================================
 // =                  Declare Vector Vector Multiplication                    =
 // ============================================================================
+// X dot Y
 dcomplex dot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y);
 fcomplex dot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y);
 double dot(std::vector<double>& X, std::vector<double>& Y);
 float dot(std::vector<float>& X, std::vector<float>& Y);
+
+// X.conj dot Y
+dcomplex cdot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y);
+fcomplex cdot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y);
 
 // ============================================================================
 // =                  Declare Matrix Vector Multiplication                    =
@@ -298,6 +300,9 @@ void mxmw(Matrix<dcomplex>& A, Matrix<dcomplex>& B, Matrix<dcomplex>& C, char op
 void mxmw(Matrix<fcomplex>& A, Matrix<fcomplex>& B, Matrix<fcomplex>& C, char option = 'g');
 void mxmw(Matrix<double>& A, Matrix<double>& B, Matrix<double>& C, char option = 'g');
 void mxmw(Matrix<float>& A, Matrix<float>& B, Matrix<float>& C, char option = 'g');
+
+// hermitian matrices
+
 
 // ============================================================================
 // =                        Declare Diagonalization                           =

@@ -333,7 +333,17 @@ fcomplex dot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y) {
 }
 
 // X.conjugate dot Y
+dcomplex cdot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y) {
+    int incx = 1; int incy = 1;  // stride
+    int n = X.size();
+    return BLAS::zdotc_(&n, &(X[0]), &incx, &(Y[0]), &incy);
+}
 
+fcomplex cdot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y) {
+    int incx = 1; int incy = 1;  // stride
+    int n = X.size();
+    return BLAS::cdotc_(&n, &(X[0]), &incx, &(Y[0]), &incy);
+}
 
 
 // ============================================================================
