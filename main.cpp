@@ -2,7 +2,7 @@
 #include <fstream>
 #include <complex>
 #include <vector>
-#include <typeinfo>
+#include "src/Vector.h"
 #include "src/Matrix.h"
 
 typedef std::complex<double> dcomplex;
@@ -72,10 +72,15 @@ int main() {
 //        std::cout << std::endl;
 //        A *= 4;
 //        A.print();
-        //test norm
-        std::vector<dcomplex> v = {{1,1},1};
-        std::cout << norm(v) << std::endl;
 
+//        //test norm
+//        std::vector<dcomplex> v({{1,1},1});
+//        std::vector<dcomplex> w = v * 3;
+//        v += w;
+//        // std::vector<dcomplex> y = v + w;
+//        for (const auto& x : v ) {
+//            std::cout << x << " ";
+//        }
 
 
 

@@ -224,6 +224,33 @@ src/Matrix.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Matrix.cpp.s
 .PHONY : src/Matrix.cpp.s
 
+src/Vector.o: src/Vector.cpp.o
+
+.PHONY : src/Vector.o
+
+# target to build an object file
+src/Vector.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Vector.cpp.o
+.PHONY : src/Vector.cpp.o
+
+src/Vector.i: src/Vector.cpp.i
+
+.PHONY : src/Vector.i
+
+# target to preprocess a source file
+src/Vector.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Vector.cpp.i
+.PHONY : src/Vector.cpp.i
+
+src/Vector.s: src/Vector.cpp.s
+
+.PHONY : src/Vector.s
+
+# target to generate assembly for a file
+src/Vector.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPPKIT.dir/build.make CMakeFiles/CPPKIT.dir/src/Vector.cpp.s
+.PHONY : src/Vector.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -242,6 +269,9 @@ help:
 	@echo "... src/Matrix.o"
 	@echo "... src/Matrix.i"
 	@echo "... src/Matrix.s"
+	@echo "... src/Vector.o"
+	@echo "... src/Vector.i"
+	@echo "... src/Vector.s"
 .PHONY : help
 
 

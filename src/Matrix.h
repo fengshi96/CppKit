@@ -102,7 +102,7 @@ public:
     bool IsHermitian();
     bool IsSymmetric();
 
-    void conjugate()
+    void conj()
     {
         int n = data_.size();
         for (int i = 0; i < n; ++i)
@@ -166,7 +166,7 @@ Matrix<T> Matrix<T>::operator - (const Matrix<T>& B) {
 template<class T>
 Matrix<T> Matrix<T>::operator * (const T a) {
     Matrix<T> tmp(*this);
-    vscal(a, tmp);
+    mscal(a, tmp);
     return tmp;
 }
 
@@ -198,7 +198,7 @@ void Matrix<T>::operator -= (const Matrix<T>& B) {
 
 template<class T>
 void Matrix<T>::operator *= (const T a) {
-    vscal(a, *this);
+    mscal(a, *this);
 }
 
 
@@ -289,13 +289,13 @@ void Matrix<T>::transpose() {
 template<class T>
 void Matrix<T>::ajoint(Matrix<T>& m2, const Matrix<T>& m){
     m2(m);
-    m2.conjugate();
+    m2.conj();
     m2.transpose();
 }
 
 template<class T>
 void Matrix<T>::ajoint(){
-    this->conjugate();
+    this->conj();
     this->transpose();
 }
 
@@ -345,46 +345,19 @@ Matrix<T> Matrix<T>::dot(Matrix<T>& B, char option){
 }
 
 
+
+
 // ############################################################################
 // =   The following go to Matrix.cpp; The following go to Matrix.cpp;        =
 // ############################################################################
 // ============================================================================
-// =                          Declare Vector Scalar                           =
-// ============================================================================
-void vscal(const dcomplex& a, std::vector<dcomplex>& X);
-void vscal(const fcomplex& a, std::vector<fcomplex>& X);
-void vscal(const double& a, std::vector<double>& X);
-void vscal(const float& a, std::vector<float>& X);
-
-// ============================================================================
 // =                          Declare Matrix Scalar                           =
 // ============================================================================
-void vscal(const dcomplex& a, Matrix<dcomplex>& X);
-void vscal(const fcomplex& a, Matrix<fcomplex>& X);
-void vscal(const double& a, Matrix<double>& X);
-void vscal(const float& a, Matrix<float>& X);
+void mscal(const dcomplex& a, Matrix<dcomplex>& X);
+void mscal(const fcomplex& a, Matrix<fcomplex>& X);
+void mscal(const double& a, Matrix<double>& X);
+void mscal(const float& a, Matrix<float>& X);
 
-// ============================================================================
-// =                           Declare Vector Norm                            =
-// ============================================================================
-double norm(const std::vector<dcomplex>& v);
-float norm(const std::vector<fcomplex>& v);
-double norm(const std::vector<double>& v);
-float norm(const std::vector<float>& v);
-
-
-// ============================================================================
-// =                  Declare Vector Vector Multiplication                    =
-// ============================================================================
-// X dot Y
-dcomplex dot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y);
-fcomplex dot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y);
-double dot(std::vector<double>& X, std::vector<double>& Y);
-float dot(std::vector<float>& X, std::vector<float>& Y);
-
-// X.conj dot Y
-dcomplex cdot(std::vector<dcomplex>& X, std::vector<dcomplex>& Y);
-fcomplex cdot(std::vector<fcomplex>& X, std::vector<fcomplex>& Y);
 
 // ============================================================================
 // =                  Declare Matrix Vector Multiplication                    =
@@ -421,4 +394,12 @@ void diag(Matrix<double> &m, std::vector<double>& evalsRe, std::vector<double>& 
 void diag(Matrix<float> &m, std::vector<float>& evalsRe, std::vector<float>& evalsIm,
           std::vector<float> vr, char option);
 
+// ############################################################################
+// =                        End of Declare for Matrix.cpp;                    =
+// ############################################################################
+
+
 #endif
+
+
+
