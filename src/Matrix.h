@@ -53,7 +53,7 @@ public:
 
     void print() {
             std::cout.precision(8);
-            std::cout << "shape:= (" << nrow << "," << ncol << ")" << std::endl;
+            // std::cout << "shape:= (" << nrow << "," << ncol << ")" << std::endl;
             for(int i=0; i < nrow; i++) {
                 for(int j=0; j < ncol; j++) {
                     std::cout << data_[i+ j * nrow] << "\t";
@@ -109,6 +109,13 @@ public:
             data_[i] = std::conj(data_[i]);
     }
 
+    Matrix<T> operator + (const Matrix<T>& B);
+    Matrix<T> operator - (const Matrix<T>& B);
+    Matrix<T> operator * (T a);
+    void operator += (const Matrix<T>& B);
+    void operator -= (const Matrix<T>& B);
+    void operator *= (T a);
+
     void transpose(Matrix<T>& m2, const Matrix<T>& m);
     void transpose();
     void ajoint(Matrix<T>& m2, const Matrix<T>& m);
@@ -123,7 +130,78 @@ private:
 };
 
 
-// -----functions-----
+// ############################################################################
+// =                                 Functions                                =
+// ############################################################################
+template<class T>
+Matrix<T> Matrix<T>::operator + (const Matrix<T>& B) {
+    int m = B.nrow;
+    int n = B.ncol;
+    assert(this->nrow == m);
+    assert(this->ncol == n);
+    Matrix<T> tmp(m, n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            tmp(i,j) = data_[i + j * nrow] + B(i,j);
+        }
+    }
+    return tmp;
+}
+
+template<class T>
+Matrix<T> Matrix<T>::operator - (const Matrix<T>& B) {
+    int m = B.nrow;
+    int n = B.ncol;
+    assert(this->nrow == m);
+    assert(this->ncol == n);
+    Matrix<T> tmp(m, n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            tmp(i,j) = data_[i + j * nrow] - B(i,j);
+        }
+    }
+    return tmp;
+}
+
+template<class T>
+Matrix<T> Matrix<T>::operator * (const T a) {
+    Matrix<T> tmp(*this);
+    vscal(a, tmp);
+    return tmp;
+}
+
+template<class T>
+void Matrix<T>::operator += (const Matrix<T>& B) {
+    int m = B.nrow;
+    int n = B.ncol;
+    assert(this->nrow == m);
+    assert(this->ncol == n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            data_[i + j * nrow] = data_[i + j * nrow] + B(i,j);
+        }
+    }
+}
+
+template<class T>
+void Matrix<T>::operator -= (const Matrix<T>& B) {
+    int m = B.nrow;
+    int n = B.ncol;
+    assert(this->nrow == m);
+    assert(this->ncol == n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            data_[i + j * nrow] = data_[i + j * nrow] - B(i,j);
+        }
+    }
+}
+
+template<class T>
+void Matrix<T>::operator *= (const T a) {
+    vscal(a, *this);
+}
+
+
 template<class T>
 bool Matrix<T>::IsSquare() {
     bool out = true;
@@ -267,10 +345,34 @@ Matrix<T> Matrix<T>::dot(Matrix<T>& B, char option){
 }
 
 
-
 // ############################################################################
 // =   The following go to Matrix.cpp; The following go to Matrix.cpp;        =
 // ############################################################################
+// ============================================================================
+// =                          Declare Vector Scalar                           =
+// ============================================================================
+void vscal(const dcomplex& a, std::vector<dcomplex>& X);
+void vscal(const fcomplex& a, std::vector<fcomplex>& X);
+void vscal(const double& a, std::vector<double>& X);
+void vscal(const float& a, std::vector<float>& X);
+
+// ============================================================================
+// =                          Declare Matrix Scalar                           =
+// ============================================================================
+void vscal(const dcomplex& a, Matrix<dcomplex>& X);
+void vscal(const fcomplex& a, Matrix<fcomplex>& X);
+void vscal(const double& a, Matrix<double>& X);
+void vscal(const float& a, Matrix<float>& X);
+
+// ============================================================================
+// =                           Declare Vector Norm                            =
+// ============================================================================
+double norm(const std::vector<dcomplex>& v);
+float norm(const std::vector<fcomplex>& v);
+double norm(const std::vector<double>& v);
+float norm(const std::vector<float>& v);
+
+
 // ============================================================================
 // =                  Declare Vector Vector Multiplication                    =
 // ============================================================================

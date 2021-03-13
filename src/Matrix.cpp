@@ -306,6 +306,88 @@ void diag(Matrix<fcomplex> &m, std::vector<fcomplex>& evals, std::vector<fcomple
     }
 }
 
+// ============================================================================
+// =                           Vector Norm Wrapper                            =
+// ============================================================================
+double norm(const std::vector<dcomplex>& v){
+    int n = v.size();
+    int incx = 1;
+    return BLAS::dznrm2_(&n, &(v[0]), &incx);
+}
+
+float norm(const std::vector<fcomplex>& v){
+    int n = v.size();
+    int incx = 1;
+    return BLAS::scnrm2_(&n, &(v[0]), &incx);
+}
+
+double norm(const std::vector<double>& v){
+    int n = v.size();
+    int incx = 1;
+    return BLAS::dnrm2_(&n, &(v[0]), &incx);
+}
+
+float norm(const std::vector<float>& v){
+    int n = v.size();
+    int incx = 1;
+    return BLAS::snrm2_(&n, &(v[0]), &incx);
+}
+
+
+// ============================================================================
+// =                           Vector Scalar Wrapper                          =
+// ============================================================================
+void vscal(const dcomplex& a, std::vector<dcomplex>& X) {
+    int incx = 1;
+    int n = X.size();
+    BLAS::zscal_(&n, &a, &(X[0]), &incx);
+}
+
+void vscal(const fcomplex& a, std::vector<fcomplex>& X) {
+    int incx = 1;
+    int n = X.size();
+    BLAS::cscal_(&n, &a, &(X[0]), &incx);
+}
+
+void vscal(const double& a, std::vector<double>& X) {
+    int incx = 1;
+    int n = X.size();
+    BLAS::dscal_(&n, &a, &(X[0]), &incx);
+}
+
+void vscal(const float& a, std::vector<float>& X) {
+    int incx = 1;
+    int n = X.size();
+    BLAS::sscal_(&n, &a, &(X[0]), &incx);
+}
+
+
+// ============================================================================
+// =                           Matrix Scalar Wrapper                          =
+// ============================================================================
+void vscal(const dcomplex& a, Matrix<dcomplex>& X) {
+    int incx = 1;
+    int n = X.rows() * X.cols();
+    BLAS::zscal_(&n, &a, &(X(0,0)), &incx);
+}
+
+void vscal(const fcomplex& a, Matrix<fcomplex>& X) {
+    int incx = 1;
+    int n = X.rows() * X.cols();
+    BLAS::cscal_(&n, &a, &(X(0,0)), &incx);
+}
+
+void vscal(const double & a, Matrix<double>& X) {
+    int incx = 1;
+    int n = X.rows() * X.cols();
+    BLAS::dscal_(&n, &a, &(X(0,0)), &incx);
+}
+
+void vscal(const float & a, Matrix<float>& X) {
+    int incx = 1;
+    int n = X.rows() * X.cols();
+    BLAS::sscal_(&n, &a, &(X(0,0)), &incx);
+}
 
 
 // ============================================================================

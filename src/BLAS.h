@@ -24,6 +24,23 @@ namespace BLAS {
         dcomplex zdotc_(const int*, const dcomplex *, const int*, const dcomplex*, const int* );
         fcomplex cdotc_(const int*, const fcomplex *, const int*, const fcomplex*, const int* );
 
+        // ****************************************************************************
+        // *                          SCAL: rescale vectors
+        // ****************************************************************************
+        void sscal_(const int *, const float *, float *, const int *);
+        void dscal_(const int *, const double *, double *, const int *);
+        void cscal_(const int *, const fcomplex *, fcomplex *, const int *);
+        void zscal_(const int *, const dcomplex *, dcomplex *, const int *);
+
+        // ****************************************************************************
+        // *                          NRM2: vector norm
+        // ****************************************************************************
+        float scnrm2_(const int *, const fcomplex *, const int *);
+        double dznrm2_(const int *, const dcomplex *, const int *);
+        double dnrm2_(const int *, const double *, const int *);
+        float snrm2_(const int *, const float *, const int *);
+
+
         // ============================================================================
         // =    Level 2 BLAS          GEMV: matrix vector multiply                    =
         // ============================================================================
@@ -42,6 +59,7 @@ namespace BLAS {
                                 int*,const fcomplex*,fcomplex*,int*);
         void zhemv_(char*,int*,const dcomplex*,const dcomplex*,
                                 int*,const dcomplex*,int*,const dcomplex*,dcomplex*,int*);
+
 
         // ============================================================================
         // = Level 3 BLAS             GEMM: matrix matrix multiply                    =
